@@ -36,3 +36,25 @@ so that it minimizes the loss
 $$
 \sum_{i=1}^N \left[S_\mathcal{J}(t_i; \mathbf{x}_i) - y_i\right]^2.
 $$
+
+# Running the pipeline
+
+## Nextflow
+
+The pipeline runs with [Nextflow](https://www.nextflow.io/) and it has been tested with Nextflow version 25.04.6 which can be installed with conda using the following command line:
+```
+conda install -c bioconda nextflow=25.04.6
+```
+
+## Command line
+
+```
+nextflow run main.nf -resume
+```
+
+## Before running
+
+Make sure to update the config params in the script:
+```
+nextflow.config
+```
