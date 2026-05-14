@@ -46,15 +46,22 @@ The pipeline runs with [Nextflow](https://www.nextflow.io/) and it has been test
 conda install -c bioconda nextflow=25.04.6
 ```
 
-## Command line
-
-```
-nextflow run main.nf -resume
-```
-
-## Before running
+## Config
 
 Make sure to update the config params in the script:
 ```
 nextflow.config
+```
+
+## Input
+
+Update the `params.raw_input` variable in `main.nf`, for example:
+```
+params.raw_input = "${projectDir}/data/raw_input_data.xlsx"
+```
+
+## Run
+
+```
+nextflow run main.nf -resume
 ```
