@@ -2,7 +2,6 @@
 nextflow.enable.dsl=2
 
 params.raw_input = "${projectDir}/data/INTERVAL_for_ferran.xlsx"
-params.harmonics = 3
 
 
 process PREPROCESS {
@@ -16,7 +15,7 @@ process PREPROCESS {
 
     script:
     """
-    python ${projectDir}/generate_inputs.py preprocess \
+    python ${projectDir}/preprocess.py preprocess \
         --input_file "${input_file}" \
         --output_file "output.tsv"
     """
@@ -34,7 +33,7 @@ process GENERATE_RESPONSES {
 
     script:
     """
-    python ${projectDir}/generate_inputs.py responses \
+    python ${projectDir}/preprocess.py responses \
         --input_file ${input} \
         --output_file responses.csv
     """
@@ -51,25 +50,22 @@ process FOURIER_REGRESSION {
     output:
     path "out_model_${response}.keras"
     path "out_performance_${response}.png"
-    path "out_shap_absolute_${response}.png"
-    path "out_shap_heatmap_${response}.png"
+    path "out_shap_boxplots_${response}.png"
     path "out_partial_dependence_sex_${response}.png"
     path "out_partial_dependence_age_${response}.png"
-    path "out_summary_${response}.tsv"
+    path "out_summary_${response}.pickle"
 
     script:
     """
     python ${projectDir}/fourier_regression.py \
         --response ${response} \
-        --harmonics ${params.harmonics} \
         --data ${preprocessed_data} \
         --out_model out_model_${response}.keras \
         --out_performance out_performance_${response}.png \
-        --out_shap_absolute out_shap_absolute_${response}.png \
-        --out_shap_heatmap out_shap_heatmap_${response}.png \
+        --out_shap_boxplots out_shap_boxplots_${response}.png \
         --out_partial_dependence_sex out_partial_dependence_sex_${response}.png \
         --out_partial_dependence_age out_partial_dependence_age_${response}.png \
-        --out_summary out_summary_${response}.tsv
+        --out_summary out_summary_${response}.pickle
     """
 
 }
